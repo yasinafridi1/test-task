@@ -4,6 +4,7 @@ import Form from "../components/Form";
 import Input from "../components/Input";
 import { loginUser } from "../https";
 import { useNavigate } from "react-router-dom";
+import { loginInputs } from "../Data";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -25,7 +26,7 @@ const Login = () => {
         password: inputValues.password,
       });
       localStorage.setItem("user", true);
-      navigate("vehicle-info");
+      navigate("/vehicle-info");
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
@@ -57,24 +58,20 @@ const Login = () => {
         onSubmit={handleSubmit}
         loading={loading}
       >
-        <Input
-          id="email"
-          type="email"
-          label="Your email"
-          name="email"
-          value={inputValues.email}
-          onChange={handleInputChange}
-          placeholder="example@gmail.com"
-        />
-        <Input
-          id="password"
-          type="password"
-          label="Your password"
-          name="password"
-          value={inputValues.password}
-          onChange={handleInputChange}
-          placeholder="••••••••"
-        />
+        {loginInputs.map((inputfield, index) => {
+          return (
+            <Input
+              key={index}
+              id={inputfield.id}
+              type={inputfield.type}
+              label={inputfield.label}
+              name={inputfield.name}
+              value={inputValues[inputfield.name]}
+              onChange={handleInputChange}
+              placeholder={inputfield.placeholder}
+            />
+          );
+        })}
       </Form>
     </Main>
   );

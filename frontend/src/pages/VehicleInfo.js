@@ -5,6 +5,8 @@ import Input from "../components/Input";
 import { vehicleRegister } from "../https/index";
 import { uploadMultipleImages } from "../https/imageUpload";
 import toast from "react-hot-toast";
+import { vehicleInputs } from "../Data";
+import { useNavigate } from "react-router-dom";
 
 function numberCheck(value) {
   let contactCheck = /^((0)?)(3)([0-9]{9})$/;
@@ -16,6 +18,7 @@ function numberCheck(value) {
 }
 
 const VehicleInfo = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -68,7 +71,15 @@ const VehicleInfo = () => {
         }
       } catch (error) {
         if (error.response) {
-          setError(error.response.data.message);
+          if (error.response.status === 401) {
+            localStorage.clear();
+            setError("Unauthorized. Redirecting to login in 2 seconds...");
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
+          } else {
+            setError(error.response.data.message);
+          }
         } else {
           setError("Something went wrong");
         }
@@ -161,33 +172,20 @@ const VehicleInfo = () => {
           loading={loading}
           error={error}
         >
-          <Input
-            id="model"
-            type="text"
-            label="Vehicle Model"
-            name="model"
-            value={vehicleInfo.model}
-            onChange={handleInputChange}
-            placeholder="Vehicle model"
-          />
-          <Input
-            id="price"
-            type="number"
-            label="Vehicle Price"
-            name="price"
-            value={vehicleInfo.price}
-            onChange={handleInputChange}
-            placeholder="Vehicle Price"
-          />
-          <Input
-            id="phoneNumber"
-            type="string"
-            label="Phone number"
-            name="phoneNumber"
-            value={vehicleInfo.phoneNumber}
-            onChange={handleInputChange}
-            placeholder="i-e 03000000000"
-          />
+          {vehicleInputs.map((inputfield, index) => {
+            return (
+              <Input
+                key={index}
+                id={inputfield.id}
+                type={inputfield.type}
+                label={inputfield.label}
+                name={inputfield.name}
+                value={vehicleInfo[inputfield.name]}
+                onChange={handleInputChange}
+                placeholder={inputfield.placeholder}
+              />
+            );
+          })}
 
           <div>
             <label

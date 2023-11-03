@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import VehicleInfo from "./pages/VehicleInfo";
@@ -10,7 +10,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route
-          path=""
+          path="/"
           element={
             <RedirectRoute>
               <Login />
@@ -18,11 +18,19 @@ const App = () => {
           }
         />
         <Route
-          path="vehicle-info"
+          path="/vehicle-info"
           element={
             <ProtectedRoute>
               <VehicleInfo />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RedirectRoute>
+              <Login />
+            </RedirectRoute>
           }
         />
       </Routes>

@@ -6,30 +6,21 @@ import ProtectedRoute from "./ProtectedRoute";
 import RedirectRoute from "./RedirectRoute";
 
 const App = () => {
-  const [user, setUser] = useState(false);
-  useEffect(() => {
-    const data = localStorage.getItem("user");
-    if (data) {
-      setUser(true);
-    } else {
-      setUser(false);
-    }
-  }, []);
   return (
     <Router>
       <Routes>
         <Route
-          path="/login"
+          path=""
           element={
-            <RedirectRoute user={user}>
+            <RedirectRoute>
               <Login />
             </RedirectRoute>
           }
         />
         <Route
-          path="/"
+          path="vehicle-info"
           element={
-            <ProtectedRoute user={user}>
+            <ProtectedRoute>
               <VehicleInfo />
             </ProtectedRoute>
           }

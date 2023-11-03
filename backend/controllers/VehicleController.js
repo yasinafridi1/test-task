@@ -5,7 +5,6 @@ function vehicleController() {
   return {
     registerVehicle: async (req, res) => {
       try {
-        console.log(req.body);
         const { model, price, phoneNumber, pictureCount } =
           req.body.vehicleInfo;
         if (!model || !price || !phoneNumber || !pictureCount) {
